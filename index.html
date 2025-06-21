@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Coaching App Payment</title>
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+  <button id="checkout-button">Pay €300</button>
+
+  <script>
+    const stripe = Stripe('pk_test_YOUR_PUBLIC_KEY'); // Replace with your real Stripe public key
+
+    document.getElementById('checkout-button').addEventListener('click', () => {
+      fetch('https://YOUR_BACKEND/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => res.json())
+      .then(data => {
+        return stripe.redirectToCheckout({ sessionId: data.id });
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>
