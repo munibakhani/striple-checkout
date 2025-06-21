@@ -1,11 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Coaching App Payment</title>
   <script src="https://js.stripe.com/v3/"></script>
-  <script src="https://unpkg.com/lottie-web@5.10.2/build/player/lottie.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -22,25 +23,31 @@
 
     .container {
       width: 400px;
+      max-width: 90vw;
       background-color: white;
       border-radius: 15px;
-      padding: 25px;
+      padding: 25px 30px; /* Added horizontal padding for left/right space */
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
+      box-sizing: border-box;
     }
 
     .card-selection {
       display: flex;
       justify-content: space-between;
       margin-bottom: 20px;
+      gap: 15px; /* Space between cards */
     }
 
     .card-option {
-      width: 30%;
+      flex: 1;
       cursor: pointer;
       border: 2px solid transparent;
       border-radius: 10px;
-      padding: 5px;
+      padding: 8px;
+      box-sizing: border-box;
+      transition: background-color 0.3s, border-color 0.3s;
+      max-width: 120px; /* smaller cards */
     }
 
     .card-option.selected {
@@ -51,6 +58,8 @@
     .card-option img {
       width: 100%;
       height: auto;
+      display: block;
+      margin: 0 auto;
     }
 
     input {
@@ -61,6 +70,7 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
+      box-sizing: border-box;
     }
 
     .pay-button {
@@ -73,6 +83,7 @@
       border-radius: 8px;
       cursor: pointer;
       margin-top: 20px;
+      box-sizing: border-box;
     }
 
     .note {
@@ -85,16 +96,31 @@
       display: none;
       flex-direction: column;
       align-items: center;
+      width: 400px;
+      max-width: 90vw;
+      padding: 25px 30px; /* same padding as payment form */
+      box-sizing: border-box;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
     }
 
     #animation {
       width: 150px;
       height: 150px;
       margin-bottom: 20px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     h2.success {
       color: #341539;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-top: 0;
     }
   </style>
 </head>
@@ -104,12 +130,6 @@
     <h2>Pay for 3-Month Access</h2>
 
     <div class="card-selection">
-      <div class="card-option" onclick="selectCard(this)">
-        <img src="visa.png" alt="Visa" />
-      </div>
-      <div class="card-option" onclick="selectCard(this)">
-        <img src="master_card.png" alt="MasterCard" />
-      </div>
       <div class="card-option" onclick="selectCard(this)">
         <img src="credit_card.png" alt="Credit Card" />
       </div>
@@ -136,15 +156,24 @@
     }
 
     function showSuccess() {
+      const cardNumber = document.getElementById('card-number').value.trim();
+      const expiry = document.getElementById('expiry').value.trim();
+      const cvc = document.getElementById('cvc').value.trim();
+      if (!cardNumber || !expiry || !cvc) {
+        alert('Please fill all the card details.');
+        return;
+      }
+
       document.getElementById('payment-form').style.display = 'none';
-      document.getElementById('success-page').style.display = 'flex';
+      const successPage = document.getElementById('success-page');
+      successPage.style.display = 'flex';
 
       lottie.loadAnimation({
         container: document.getElementById('animation'),
         renderer: 'svg',
         loop: false,
         autoplay: true,
-        path: 'animation_green_tick.json' // Make sure this is in your project folder
+        path: 'animation_green_tick.json' // Make sure this is in the same folder
       });
     }
   </script>
