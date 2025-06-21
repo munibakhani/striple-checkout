@@ -1,28 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Coaching App Payment</title>
   <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body {
+      background-color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+      border: 2px solid #341539;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #341539;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .card-selection {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .card-option {
+      width: 48%;
+      padding: 15px;
+      background-color: #fafafa;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .card-option.selected {
+      border-color: #341539;
+      background-color: #FAFA33;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .pay-button {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background-color: #341539;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin-top: 25px;
+      cursor: pointer;
+    }
+
+    .note {
+      font-size: 12px;
+      text-align: center;
+      margin-top: 10px;
+      color: #555;
+    }
+  </style>
 </head>
 <body>
-  <button id="checkout-button">Pay €300</button>
+
+  <div class="container">
+    <h2>Pay for 3-Month Access</h2>
+
+    <div class="card-selection">
+      <div class="card-option" onclick="selectCard(this)">Visa</div>
+      <div class="card-option" onclick="selectCard(this)">MasterCard</div>
+    </div>
+
+    <label for="card-number">Card Number</label>
+    <input type="text" id="card-number" placeholder="1234 5678 9012 3456" />
+
+    <label for="expiry">Expiry Date</label>
+    <input type="text" id="expiry" placeholder="MM/YY" />
+
+    <label for="cvc">CVC</label>
+    <input type="text" id="cvc" placeholder="123" />
+
+    <button class="pay-button" onclick="startCheckout()">Pay €299.80</button>
+
+    <div class="note">Secure payment with Stripe</div>
+  </div>
 
   <script>
-    const stripe = Stripe('pk_test_YOUR_PUBLIC_KEY'); // Replace with your real Stripe public key
+    function selectCard(el) {
+      document.querySelectorAll('.card-option').forEach(btn => btn.classList.remove('selected'));
+      el.classList.add('selected');
+    }
 
-    document.getElementById('checkout-button').addEventListener('click', () => {
+    function startCheckout() {
+      // Replace with your actual Stripe public key and backend route
+      const stripe = Stripe('pk_test_YOUR_PUBLIC_KEY');
       fetch('https://YOUR_BACKEND/create-checkout-session', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
       })
-      .then(res => res.json())
-      .then(data => {
-        return stripe.redirectToCheckout({ sessionId: data.id });
-      })
-      .catch(error => console.error('Error:', error));
-    });
+        .then(res => res.json())
+        .then(data => stripe.redirectToCheckout({ sessionId: data.id }))
+        .catch(err => alert('Error: ' + err.message));
+    }
   </script>
+
 </body>
 </html>
