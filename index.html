@@ -131,7 +131,13 @@
 
     <div class="card-selection">
       <div class="card-option" onclick="selectCard(this)">
-        <img src="credit_card.png" alt="Credit Card" />
+        <img src="visa.png" alt="Visa" />
+      </div>
+      <div class="card-option" onclick="selectCard(this)">
+        <img src="master_card.png" alt="MasterCard" />
+      </div>
+      <div class="card-option" onclick="selectCard(this)">
+        <img src="cradit_card.png" alt="Cradit Card" />
       </div>
     </div>
 
@@ -150,6 +156,8 @@
   </div>
 
   <script>
+    const animationData = { /* entire JSON here */ };
+
     function selectCard(el) {
       document.querySelectorAll('.card-option').forEach(card => card.classList.remove('selected'));
       el.classList.add('selected');
@@ -173,7 +181,7 @@
         renderer: 'svg',
         loop: false,
         autoplay: true,
-        path: 'animation_green_tick.json' // Make sure this is in the same folder
+        animationData: animationData
       });
     }
   </script>
