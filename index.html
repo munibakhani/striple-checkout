@@ -161,21 +161,23 @@
       document.querySelectorAll('.card-option').forEach(card => card.classList.remove('selected'));
       el.classList.add('selected');
     }
+function showSuccess() {
+  // Hide payment form
+  document.getElementById('payment-form').style.display = 'none';
+  // Show success page
+  const successPage = document.getElementById('success-page');
+  successPage.style.display = 'flex';
 
-    function showSuccess() {
-      // For testing only: skip field validation
-      document.getElementById('payment-form').style.display = 'none';
-      const successPage = document.getElementById('success-page');
-      successPage.style.display = 'flex';
+  // Load animation with only the path (no animationData)
+  lottie.loadAnimation({
+    container: document.getElementById('animation'),
+    renderer: 'svg',
+    loop: false,
+    autoplay: true,
+    path: 'https://raw.githubusercontent.com/munibakhani/striple-checkout/main/Animation_grren_tick.json'
+  });
+}
 
-      lottie.loadAnimation({
-        container: document.getElementById('animation'),
-        renderer: 'svg',
-        loop: false,
-        autoplay: true
-        path:'https://raw.githubusercontent.com/munibakhani/striple-checkout/main/Animation_grren_tick.json'
-      });
-    }
   </script>
 
 </body>
